@@ -6,7 +6,6 @@ import { PasswordError } from "./PasswordError";
 
 export const SignUp = () => {
   const [form, setForm] = useState();
-  console.log(form?.password.search(/[a-z]/));
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "profile_pic")
