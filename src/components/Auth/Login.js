@@ -2,15 +2,24 @@ import { Button, Text } from "@chakra-ui/react";
 import { InputBox } from "./InputBox";
 import { Email, Lock } from "../../Assets/svgs/Form";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "../../api/Authentication/login";
 
 export const Login = () => {
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      console.log(data);
+      if (data?.token) localStorage.setItem("chit-chat", data?.token);
+    },
+  });
   const [form, setForm] = useState();
   const [error, setError] = useState({});
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
     setError({});
-  }
+  };
   const common = { onChange: handleChange, form };
   const handleSubmit = () => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -18,11 +27,8 @@ export const Login = () => {
       return setError({ ...error, email: "Email is not valid" });
     if (!form?.password)
       return setError({ ...error, password: "Password is required" });
-    const data = {
-      email: form?.email,
-      password: form?.password,
-    }
-  }
+    mutation.mutate(form);
+  };
 
   return (
     <>
@@ -38,7 +44,7 @@ export const Login = () => {
           {error?.password}
         </Text>
       )}
-      <Button>Sign In</Button>
+      <Button onClick={handleSubmit}>Sign In</Button>
     </>
   );
 };

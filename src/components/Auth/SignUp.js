@@ -16,8 +16,9 @@ export const SignUp = () => {
     onSuccess: (data) => {
       if (data?.token)
         toast({
-          title: "Account created.",
-          description: "We've created your account for you.",
+          title: "Account created successfully!",
+          position: "top",
+          description: "We've created your profile for you.",
           status: "success",
           duration: 9000,
           isClosable: true,
@@ -62,7 +63,7 @@ export const SignUp = () => {
       name: form?.name,
       email: form?.email,
       password: form?.password,
-      profile_pic: formData,
+      profile_pic: form?.profile_pic ? formData : null,
     };
     mutation.mutate(data);
   };

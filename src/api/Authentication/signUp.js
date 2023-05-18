@@ -4,6 +4,7 @@ import { api } from "../../constant/helper";
 export const signUp = async (form) => {
   try {
     const { profile_pic } = form;
+    console.log(profile_pic)
     let res;
     if (profile_pic) {
       res = await axios.post(
