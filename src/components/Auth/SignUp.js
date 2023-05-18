@@ -4,10 +4,26 @@ import { InputBox } from "./InputBox";
 import { ProfilePic } from "./ProfilePic";
 import { PasswordError } from "./PasswordError";
 import { Crop } from "../Helper/Crop";
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { Validation } from "./Validation";
+import { useMutation } from "@tanstack/react-query";
+import { signUp } from "../../api/Authentication/signUp";
 
 export const SignUp = () => {
+  const toast = useToast();
+  const mutation = useMutation({
+    mutationFn: signUp,
+    onSuccess: (data) => {
+      if (data?.token)
+        toast({
+          title: "Account created.",
+          description: "We've created your account for you.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+    },
+  });
   const [form, setForm] = useState();
   const [display, setDisplay] = useState(false);
   const [error, setError] = useState({});
@@ -39,13 +55,16 @@ export const SignUp = () => {
     );
     if (!isAllValid) return;
     const formData = new FormData();
-    formData.append("image", form?.profile_pic);
+    formData.append("file", form?.profile_pic);
+    formData.append("upload_preset", "chit-chat");
+    formData.append("cloud_name", "chit-chat");
     const data = {
       name: form?.name,
       email: form?.email,
       password: form?.password,
       profile_pic: formData,
-    }
+    };
+    mutation.mutate(data);
   };
 
   return (

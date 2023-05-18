@@ -22,9 +22,6 @@ export const Crop = ({ profile_pic, setDisplay, handleChange, aspect }) => {
         files: [croppedImageUrl],
       },
     });
-    // const formData = new FormData();
-    // formData.append("image", croppedImageUrl);
-    // handleChange({ target: { name: "main_profile_pic", value: formData } });
     setDisplay(false);
   };
 

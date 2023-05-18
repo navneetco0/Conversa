@@ -4,6 +4,7 @@ import { Home } from './pages/Home'
 import { Chats } from './pages/Chats'
 
 export default function Router() {
+  const token = localStorage.getItem('chit-chat');
   return (
     <Routes>
         <Route path="/" Component={Home} exact />
