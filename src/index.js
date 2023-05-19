@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import reportWebVitals from "./reportWebVitals";
@@ -12,7 +12,7 @@ import { store } from "./app/store.ts";
 
 const queryClient = new QueryClient();
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
@@ -23,8 +23,7 @@ ReactDOM.render(
         </ChakraProvider>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
 
 reportWebVitals();
