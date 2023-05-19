@@ -1,14 +1,22 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import { Home } from './pages/Home'
-import { Chats } from './pages/Chats'
+import React from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { LoginPage } from "./pages/LoginPage";
+import { Home } from "./pages/Home";
+import { NotFound } from "./pages/NotFound";
+import { useSelector } from "react-redux";
+
+const PrivateRoute = ({auth, children }) => {
+  const { token } = useSelector((state) => state.auth);
+  if(!auth) return token ? <Navigate to="/" /> : children;
+  return token ? children : <Navigate to="/login" />;
+};
 
 export default function Router() {
-  const token = localStorage.getItem('chit-chat');
   return (
     <Routes>
-        <Route path="/" Component={Home} exact />
-        <Route path="/chats" Component={Chats} />
+      <Route path="/login" element={<PrivateRoute auth={false} >{<LoginPage/>}</PrivateRoute>} exact />
+      <Route path="/" element={<PrivateRoute auth={true}>{<Home />}</PrivateRoute>} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
-  )
+  );
 }

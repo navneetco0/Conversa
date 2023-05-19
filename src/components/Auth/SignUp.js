@@ -8,9 +8,12 @@ import { Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { Validation } from "./Validation";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "../../api/Authentication/signUp";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../app/authSlice";
 
 export const SignUp = () => {
   const toast = useToast();
+  const dispatch = useDispatch();
   const mutation = useMutation({
     mutationFn: signUp,
     onSuccess: (data) => {
@@ -23,6 +26,7 @@ export const SignUp = () => {
           duration: 9000,
           isClosable: true,
         });
+        dispatch(setToken(data?.token));
     },
   });
   const [form, setForm] = useState();

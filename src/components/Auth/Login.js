@@ -1,16 +1,33 @@
-import { Button, Text } from "@chakra-ui/react";
+import { Button, Text, useToast } from "@chakra-ui/react";
 import { InputBox } from "./InputBox";
 import { Email, Lock } from "../../Assets/svgs/Form";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../../api/Authentication/login";
-
+import { useDispatch } from "react-redux";
+import { setToken } from "../../app/authSlice";
+import {useNavigate} from 'react-router-dom'
 export const Login = () => {
+  const toast = useToast();
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log(data);
-      if (data?.token) localStorage.setItem("chit-chat", data?.token);
+      if (data?.message)
+        toast({
+          title: data?.message,
+          position: "top",
+          description: "Either the username or Password is wrong!",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      if (!!data?.token) {
+        localStorage.setItem("chit-chat", data?.token);
+        dispatch(setToken(data?.token));
+        navigate('/')
+      }
     },
   });
   const [form, setForm] = useState();
