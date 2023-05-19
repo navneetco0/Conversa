@@ -6,13 +6,11 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "../../api/Authentication/login";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../app/authSlice";
-import { useNavigate } from "react-router-dom";
 
 export const SignIn: FC = () => {
   const toast = useToast();
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (data: any) => {
