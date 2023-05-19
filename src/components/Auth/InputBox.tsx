@@ -1,15 +1,22 @@
 import { Box, FormControl, FormLabel, HStack, Input } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
-export const InputBox = ({ form, Icon, title, ...others }) => {
+interface InputBoxProps {
+  form : any;
+  Icon? : any;
+  title : string;
+  [key : string] : any;
+}
+
+export const InputBox : React.FC<InputBoxProps>  = ({ form, Icon, title, ...others }) => {
   const name = title.toLowerCase().split(" ").join("_");
   const [focus, setFocus] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const handleFocus = () => {
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
   return (
-    <FormControl spacing={1}>
+    <FormControl>
       <Box
         onClick={handleFocus}
         border={`${focus?"2px":"1px"} solid`}

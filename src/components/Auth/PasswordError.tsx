@@ -1,8 +1,14 @@
 import { Box, Divider, HStack, Text } from "@chakra-ui/react";
 import { Validation } from "./Validation";
 import { Check, Close } from "../../Assets/svgs/Form";
+import React from "react";
 
-export const PasswordError = ({ password, confirm_password }) => {
+interface PasswordErrorProps {
+  password: string | undefined;
+  confirm_password: string | undefined;
+}
+
+export const PasswordError : React.FC<PasswordErrorProps> = ({ password, confirm_password }) => {
   const validation = Validation({ password, confirm_password });
   return (
     <Box>
@@ -36,7 +42,12 @@ export const PasswordError = ({ password, confirm_password }) => {
   );
 };
 
-const ErrorBox = ({ isValid, error }) => {
+interface ErrorBoxProps {
+  isValid: boolean;
+  error: string;
+}
+
+const ErrorBox : React.FC<ErrorBoxProps> = ({ isValid, error }) => {
   return (
     <HStack alignItems={"center"}>
       <Box h="20px" w="20px" color={!!isValid ? "secondary.500" : "tertiary.600"}>

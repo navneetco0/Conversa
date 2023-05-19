@@ -1,20 +1,22 @@
 import { Button, Text, useToast } from "@chakra-ui/react";
 import { InputBox } from "./InputBox";
 import { Email, Lock } from "../../Assets/svgs/Form";
-import { useState } from "react";
+import React, { ChangeEvent, FC, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../../api/Authentication/login";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../app/authSlice";
-import {useNavigate} from 'react-router-dom'
-export const Login = () => {
+import { useNavigate } from "react-router-dom";
+
+export const SignIn: FC = () => {
   const toast = useToast();
+  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
-      if (data?.message)
+    onSuccess: (data: any) => {
+      if (data?.message) {
         toast({
           title: data?.message,
           position: "top",
@@ -23,16 +25,25 @@ export const Login = () => {
           duration: 9000,
           isClosable: true,
         });
+        setLoading(false);
+      }
       if (!!data?.token) {
+        toast({
+          title: "Login successfully!",
+          position: "top",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
         localStorage.setItem("chit-chat", data?.token);
         dispatch(setToken(data?.token));
-        navigate('/')
+        setLoading(false);
       }
     },
   });
-  const [form, setForm] = useState();
-  const [error, setError] = useState({});
-  const handleChange = (e) => {
+  const [form, setForm] = useState<any>({});
+  const [error, setError] = useState<any>({});
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
     setError({});
@@ -44,6 +55,7 @@ export const Login = () => {
       return setError({ ...error, email: "Email is not valid" });
     if (!form?.password)
       return setError({ ...error, password: "Password is required" });
+    setLoading(true);
     mutation.mutate(form);
   };
 
@@ -61,7 +73,15 @@ export const Login = () => {
           {error?.password}
         </Text>
       )}
-      <Button onClick={handleSubmit}>Sign In</Button>
+      <Button
+        onClick={handleSubmit}
+        isLoading={loading}
+        colorScheme="secondary"
+        variant={loading ? "outline" : "solid"}
+        loadingText={"wait..."}
+      >
+        Sign In
+      </Button>
     </>
   );
 };

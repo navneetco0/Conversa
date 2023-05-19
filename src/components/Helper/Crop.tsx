@@ -1,27 +1,47 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
-import Cropper from "react-easy-crop";
+import React, { FC, useCallback, useState } from "react";
+import Cropper, { Area, Point } from "react-easy-crop";
 import getCroppedImg from "./cropImg";
 import { Close } from "../../Assets/svgs/Form";
 
-export const Crop = ({ profile_pic, setDisplay, handleChange, aspect }) => {
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+interface CropProps {
+  profile_pic: any;
+  setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  aspect: number;
+}
 
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+export const Crop: FC<CropProps> = ({
+  profile_pic,
+  setDisplay,
+  handleChange,
+  aspect,
+}) => {
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
+
+  const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
   const [value, setValue] = useState(1);
 
   const onCrop = async () => {
-    const croppedImageUrl = await getCroppedImg(profile_pic, croppedAreaPixels);
-    handleChange({
-      target: {
-        name: "profile_pic",
-        files: [croppedImageUrl],
-      },
-    });
+    if(croppedAreaPixels){
+      const croppedImageUrl = await getCroppedImg(profile_pic, croppedAreaPixels);
+      const fileListArray = Array.from([croppedImageUrl]);
+      handleChange({
+        target: {
+          name: "profile_pic",
+          files: fileListArray,
+        },
+      } as any);
+    }
     setDisplay(false);
   };
 

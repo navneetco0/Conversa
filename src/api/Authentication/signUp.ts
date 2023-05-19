@@ -1,7 +1,7 @@
 import axios from "axios";
 import { api } from "../../constant/helper";
 
-export const signUp = async (form) => {
+export const signUp = async (form: any) => {
   try {
     const { profile_pic } = form;
     let res;
@@ -22,7 +22,7 @@ export const signUp = async (form) => {
     );
     if(data?.token) localStorage.setItem('chit-chat', data?.token);
     return data;
-  } catch (error) {
-    return error;
+  } catch (error:any) {
+    return error?.response?.data
   }
 };

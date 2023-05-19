@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { ChangeEvent, FC, useState } from "react";
 import { Email, Identy, Lock } from "../../Assets/svgs/Form";
 import { InputBox } from "./InputBox";
 import { ProfilePic } from "./ProfilePic";
@@ -11,13 +11,33 @@ import { signUp } from "../../api/Authentication/signUp";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../app/authSlice";
 
-export const SignUp = () => {
+interface Form {
+  name?: string;
+  email?: string;
+  password?: string;
+  confirm_password?: string;
+  profile_pic?: any;
+}
+
+export const SignUp: FC = () => {
   const toast = useToast();
   const dispatch = useDispatch();
-  const mutation = useMutation({
+  const [loading, setLoading] = useState<boolean>(false);
+  const mutation = useMutation<any, unknown, Form>({
     mutationFn: signUp,
-    onSuccess: (data) => {
-      if (data?.token)
+    onSuccess: (data: any) => {
+      if (data?.message) {
+        toast({
+          title: data?.message,
+          position: "top",
+          description: "Either the username or Password is wrong!",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+        setLoading(false);
+      }
+      if (data?.token) {
         toast({
           title: "Account created successfully!",
           position: "top",
@@ -27,15 +47,17 @@ export const SignUp = () => {
           isClosable: true,
         });
         dispatch(setToken(data?.token));
+        setLoading(false);
+      }
     },
   });
-  const [form, setForm] = useState();
-  const [display, setDisplay] = useState(false);
-  const [error, setError] = useState({});
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const [form, setForm] = useState<Form>({});
+  const [display, setDisplay] = useState<boolean>(false);
+  const [error, setError] = useState<{ [key: string]: string }>({});
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, files } = e.target;
     if (name === "profile_pic") {
-      setForm({ ...form, profile_pic: e.target.files[0] });
+      setForm({ ...form, profile_pic: files?.[0] });
       setDisplay(true);
       return;
     }
@@ -47,7 +69,7 @@ export const SignUp = () => {
   const handleSubmit = () => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!form?.name) return setError({ ...error, name: "Name is required" });
-    if (!emailPattern.test(form?.email))
+    if (!emailPattern.test(form?.email ?? ""))
       return setError({ ...error, email: "Email is not valid" });
     if (!form?.password)
       return setError({ ...error, password: "Password is required" });
@@ -69,12 +91,13 @@ export const SignUp = () => {
       password: form?.password,
       profile_pic: form?.profile_pic ? formData : null,
     };
+    setLoading(true);
     mutation.mutate(data);
   };
 
   return (
     <>
-      <ProfilePic file={form?.profile_pic} name={"profile_pic"} {...common} />
+      <ProfilePic isDisabled={loading} file={form?.profile_pic} name={"profile_pic"} {...common} />
       <InputBox Icon={Identy} title={"Name"} {...common} />
       {error?.name && (
         <Text w="100%" color="red">
@@ -99,7 +122,15 @@ export const SignUp = () => {
         type="password"
         {...common}
       />
-      <Button onClick={() => handleSubmit()}>Submit</Button>
+      <Button
+        onClick={() => handleSubmit()}
+        isLoading={loading}
+        loadingText={"wait..."}
+        variant={loading?'outline':'solid'}
+        colorScheme="secondary"
+      >
+        Submit
+      </Button>
       {form?.password && (
         <PasswordError
           password={form?.password}
@@ -121,8 +152,7 @@ export const SignUp = () => {
           <Crop
             setDisplay={setDisplay}
             handleChange={handleChange}
-            aspect={"1"}
-            label={"profile_pic"}
+            aspect={1}
             profile_pic={URL.createObjectURL(form?.profile_pic)}
           />
         </Flex>

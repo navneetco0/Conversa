@@ -1,4 +1,6 @@
-export const Email = () => {
+import React, { FC } from "react";
+
+export const Email : FC = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

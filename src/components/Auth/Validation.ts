@@ -1,5 +1,22 @@
-export const Validation = ({ password, confirm_password }) => {
-  const obj = {
+interface ValidationProps {
+  password: string | undefined;
+  confirm_password: string | undefined;
+}
+
+interface ValidationResult {
+  pass_match: boolean;
+  pass_length: boolean;
+  pass_small: boolean;
+  pass_digit: boolean;
+  pass_capital: boolean;
+  special: boolean;
+}
+
+export const Validation = ({
+  password,
+  confirm_password,
+}: ValidationProps): ValidationResult => {
+  const obj: ValidationResult = {
     pass_match: false,
     pass_length: false,
     pass_small: false,

@@ -1,10 +1,10 @@
 import { Container } from "@chakra-ui/react";
-import React from "react";
+import React, { FC } from "react";
 
-export const Home = () => {
+export const Home : FC = () => {
   return (
     <Container maxW={"xl"} centerContent>
-      Home
+      <h1>Home</h1>
     </Container>
   );
 };

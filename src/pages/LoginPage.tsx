@@ -1,10 +1,10 @@
 import { Container, VStack } from "@chakra-ui/react";
-import React from "react";
+import React, { FC } from "react";
 import { SignUp } from "../components/Auth/SignUp";
-import { Login } from "../components/Auth/login";
 import { Layout } from "../components/Auth/Layout";
+import { SignIn } from "../components/Auth/SignIn";
 
-export const LoginPage = () => {
+export const LoginPage : FC = () => {
   const [state, setState] = React.useState(true);
   return (
     <Container maxW="xl" centerContent>
@@ -17,7 +17,7 @@ export const LoginPage = () => {
         borderWidth={"1px"}
       >
         <Layout setState={setState} state={state}>
-          {state ? <Login /> : <SignUp />}
+          {state ? <SignIn /> : <SignUp />}
         </Layout>
       </VStack>
     </Container>

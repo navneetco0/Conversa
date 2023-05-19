@@ -1,4 +1,6 @@
-export const Close = () => {
+import React, { FC } from "react";
+
+export const Close: FC = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
