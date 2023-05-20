@@ -4,7 +4,7 @@ import { api } from "constant/helper";
 const verifyMail = async (email: string):Promise<any> => {
   try {
     const { data } = await axios.post(
-      `${api}/api/user/verify`,
+      `${api}/api/user/send-otp`,
       { email },
       {
         headers: {

@@ -12,6 +12,8 @@ import {
 import { Email } from "Assets/svgs/Form";
 import { useMutation } from "@tanstack/react-query";
 import verifyMail from "api/Authentication/verifyMail";
+import resendOTP from "api/Authentication/resendOTP";
+import verifyOTP from "api/Authentication/verifyOTP";
 
 interface EmailBoxProps {
   error?: any;
@@ -21,6 +23,11 @@ interface EmailBoxProps {
   setForm?: any;
 }
 
+interface VerifyOtpMutationData {
+  token?: string;
+  otp?: string;
+}
+
 const EmailBox: React.FC<EmailBoxProps> = ({
   error,
   form,
@@ -28,6 +35,36 @@ const EmailBox: React.FC<EmailBoxProps> = ({
   setForm,
 }) => {
   const toast = useToast();
+  const resendotp = useMutation({
+    mutationFn: resendOTP,
+    onSuccess: (data: any) => {
+      if (data?.message) {
+        toast({
+          title: data?.message,
+          position: "top",
+          status: "info",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+    },
+  });
+  const verifyotp = useMutation({
+    mutationFn: verifyOTP,
+    onSuccess: (data: any) => {
+      if (data?.message === "OTP verified") {
+        setForm({ ...form, email_varified: true });
+      } else if (data?.message) {
+        toast({
+          title: data?.message,
+          position: "top",
+          status: "info",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+    },
+  });
   const mutation = useMutation({
     mutationFn: verifyMail,
     onSuccess: (data: any) => {
@@ -58,8 +95,17 @@ const EmailBox: React.FC<EmailBoxProps> = ({
   };
 
   const handleVerify = () => {
-    console.log("hello")
-  }
+    console.log("hello");
+    const data: VerifyOtpMutationData = {
+      token: form?.token,
+      otp: form?.otp,
+    };
+    console.log("hello");
+    verifyotp.mutate(JSON.stringify(data));
+  };
+  const handleResend = () => {
+    resendotp.mutate(form?.token);
+  };
   return (
     <>
       <InputBox
@@ -73,30 +119,60 @@ const EmailBox: React.FC<EmailBoxProps> = ({
           {error?.email}
         </Text>
       )}
-      {!error?.email && emailPattern.test(form?.email) && !form?.token && (
-        <Button variant={"link"} colorScheme="secondary" onClick={sendOTP}>
-          Click here to Send OTP to verify Email
-        </Button>
-      )}
-      {loading && (
-        <Skeleton
-          w={"100%"}
-          startColor="primary.500"
-          endColor="secondary.900"
-          height="40px"
-        />
-      )}
-      {form?.token && (
-        <InputGroup>
-          <Input name="otp" value={form?.otp} onChange={onChange} variant={"flushed"} placeholder="enter otp" />
-          {form?.otp?.length === 6 && (
-            <InputRightElement>
-              <Button onClick={handleVerify} variant={"link"} colorScheme="secondary">
-                Verify
+      {!form?.email_varified && (
+        <>
+          {!error?.email &&
+            emailPattern.test(form?.email) &&
+            !form?.token &&
+            !loading && (
+              <Button
+                variant={"link"}
+                colorScheme="secondary"
+                onClick={sendOTP}
+              >
+                Click here to Send OTP to verify Email
               </Button>
-            </InputRightElement>
+            )}
+          {loading && (
+            <Skeleton
+              w={"100%"}
+              startColor="primary.500"
+              endColor="secondary.900"
+              height="40px"
+            />
           )}
-        </InputGroup>
+          {form?.token && (
+            <>
+              <InputGroup>
+                <Input
+                  name="otp"
+                  value={form?.otp}
+                  onChange={onChange}
+                  variant={"flushed"}
+                  placeholder="enter otp"
+                />
+                {form?.otp?.length === 6 && (
+                  <InputRightElement>
+                    <Button
+                      onClick={handleVerify}
+                      variant={"link"}
+                      colorScheme="secondary"
+                    >
+                      Verify
+                    </Button>
+                  </InputRightElement>
+                )}
+              </InputGroup>
+              <Button
+                variant={"link"}
+                colorScheme="secondary"
+                onClick={handleResend}
+              >
+                Resend OTP
+              </Button>
+            </>
+          )}
+        </>
       )}
     </>
   );
