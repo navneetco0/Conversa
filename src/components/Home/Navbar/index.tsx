@@ -1,5 +1,6 @@
 import React from "react";
-import { Avatar, HStack, Text } from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
+import MenuBtn from "./MenuBtn";
 
 interface NavbarProps {
     data: any;
@@ -18,10 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({data}) => {
       justifyContent={"space-between"}
     >
         <Text fontWeight={"bold"}>Chit-Chat</Text>
-        <Avatar
-            name={data?.username}
-            src={data?.profile_pic}
-        />
+        <MenuBtn data={data} />
     </HStack>
   );
 };
