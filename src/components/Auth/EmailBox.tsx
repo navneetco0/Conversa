@@ -54,6 +54,14 @@ const EmailBox: React.FC<EmailBoxProps> = ({
     onSuccess: (data: any) => {
       if (data?.message === "OTP verified") {
         setForm({ ...form, email_varified: true });
+        toast({
+          title: data?.message,
+          position: "top",
+          status: "info",
+          description: "Your email verified successfully.",
+          duration: 9000,
+          isClosable: true,
+        });
       } else if (data?.message) {
         toast({
           title: data?.message,
@@ -68,6 +76,15 @@ const EmailBox: React.FC<EmailBoxProps> = ({
   const mutation = useMutation({
     mutationFn: verifyMail,
     onSuccess: (data: any) => {
+      if (data?.message) {
+        toast({
+          title: data?.message,
+          position: "top",
+          status: "info",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
       if (data?.token) {
         setForm({ ...form, token: data?.token });
         toast({
@@ -95,12 +112,10 @@ const EmailBox: React.FC<EmailBoxProps> = ({
   };
 
   const handleVerify = () => {
-    console.log("hello");
     const data: VerifyOtpMutationData = {
       token: form?.token,
       otp: form?.otp,
     };
-    console.log("hello");
     verifyotp.mutate(JSON.stringify(data));
   };
   const handleResend = () => {

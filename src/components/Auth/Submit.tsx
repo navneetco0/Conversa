@@ -86,12 +86,15 @@ const Submit: React.FC<SubmitProps> = ({
       email: form?.email,
       password: form?.password,
       profile_pic: form?.profile_pic ? formData : null,
+      token: form?.token,
+      otp: form?.otp,
     };
     setLoading(true);
     mutation.mutate(data);
   };
   return (
     <Button
+      w="100%"
       onClick={() => handleSubmit()}
       isLoading={loading}
       loadingText={"wait..."}
