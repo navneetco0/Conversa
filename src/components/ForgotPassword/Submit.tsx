@@ -1,10 +1,9 @@
 import { Button, useToast } from "@chakra-ui/react";
 import React from "react";
-import { Validation } from "./Validation";
 import { useMutation } from "@tanstack/react-query";
-import { signUp } from "api/Authentication/signUp";
-import { useDispatch } from "react-redux";
-import { setToken } from "app/authSlice";
+import { Validation } from "components/Auth/Validation";
+import { useNavigate } from "react-router-dom";
+import forgotPassword from "api/Authentication/forgotSend";
 
 interface SubmitProps {
   form?: any;
@@ -15,11 +14,9 @@ interface SubmitProps {
 }
 
 interface Form {
-  name?: string;
   email?: string;
   password?: string;
   confirm_password?: string;
-  profile_pic?: any;
   token?: string | null;
   otp?: string;
 }
@@ -32,39 +29,27 @@ const Submit: React.FC<SubmitProps> = ({
   setLoading,
 }) => {
   const toast = useToast();
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const mutation = useMutation<any, unknown, Form>({
-    mutationFn: signUp,
+    mutationFn: forgotPassword,
     onSuccess: (data: any) => {
       if (data?.message) {
         toast({
           title: data?.message,
           position: "top",
-          description: "Either the username or Password is wrong!",
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-        setLoading(false);
-      }
-      if (data?.token) {
-        toast({
-          title: "Account created successfully!",
-          position: "top",
-          description: "We've created your profile for you.",
+          description: "Please login to continue",
           status: "success",
           duration: 9000,
           isClosable: true,
         });
-        dispatch(setToken(data?.token));
         setLoading(false);
+        navigate("/login");
       }
     },
   });
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleSubmit = () => {
-    if (!form?.name) return setError({ ...error, name: "Name is required" });
     if (!emailPattern.test(form?.email ?? ""))
       return setError({ ...error, email: "Email is not valid" });
     if (!form?.password)
@@ -77,15 +62,10 @@ const Submit: React.FC<SubmitProps> = ({
       (value) => value === true
     );
     if (!isAllValid) return;
-    const formData = new FormData();
-    formData.append("file", form?.profile_pic);
-    formData.append("upload_preset", "chit-chat");
-    formData.append("cloud_name", "chit-chat");
     const data = {
       name: form?.name,
       email: form?.email,
       password: form?.password,
-      profile_pic: form?.profile_pic ? formData : null,
       token: form?.token,
       otp: form?.otp,
     };

@@ -8,14 +8,17 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { Email } from "Assets/svgs/Form";
+import resendOTP from "api/Authentication/resendOTP";
 import sendForgotOTP from "api/Authentication/sendForgotOTP";
 import { InputBox } from "components/Auth/InputBox";
 import React from "react";
+import PasswordBox from "./PasswordBox";
 
 const FormHandler: React.FC = () => {
-    const toast = useToast();
+  const toast = useToast();
+  const [error, setError] = React.useState({});
+  const [resend, setResend] = React.useState(true);
   const [form, setForm] = React.useState({
-    email_varified: false,
     otp: "",
     email: "",
     token: "",
@@ -46,6 +49,23 @@ const FormHandler: React.FC = () => {
       setLoading(false);
     },
   });
+
+  const resendotp = useMutation({
+    mutationFn: resendOTP,
+    onSuccess: (data: any) => {
+      if (data?.message) {
+        if (data?.message === "otp resend successfully!") setResend(false);
+        toast({
+          title: data?.message,
+          position: "top",
+          status: "info",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+    },
+  });
+
   const [loading, setLoading] = React.useState<boolean>(false);
   const handleChanges = (e: any) => {
     const { name, value } = e.target;
@@ -57,57 +77,44 @@ const FormHandler: React.FC = () => {
     setLoading(true);
     mutation.mutate(form?.email);
   };
-  const handleVerify = () => {};
-  const handleResend = () => {};
+  const handleResend = () => {
+    resendotp.mutate(form?.token);
+  };
   return (
     <>
       <InputBox Icon={Email} title={"Email"} minW="300px" {...common} />
-      {!form?.email_varified && (
+      {emailPattern.test(form?.email) && !form?.token && !loading && (
+        <Button variant={"link"} colorScheme="secondary" onClick={sendOTP}>
+          Click here to Send OTP to verify Email
+        </Button>
+      )}
+      {loading && (
+        <Skeleton
+          w={"100%"}
+          startColor="primary.500"
+          endColor="secondary.900"
+          height="40px"
+        />
+      )}
+      {form?.token && (
         <>
-          {emailPattern.test(form?.email) && !form?.token && !loading && (
-            <Button variant={"link"} colorScheme="secondary" onClick={sendOTP}>
-              Click here to Send OTP to verify Email
+          <Input
+            name="otp"
+            value={form?.otp}
+            onChange={handleChanges}
+            variant={"flushed"}
+            placeholder="enter otp"
+          />
+          {resend && (
+            <Button
+              variant={"link"}
+              colorScheme="secondary"
+              onClick={handleResend}
+            >
+              Resend OTP
             </Button>
           )}
-          {loading && (
-            <Skeleton
-              w={"100%"}
-              startColor="primary.500"
-              endColor="secondary.900"
-              height="40px"
-            />
-          )}
-          {form?.token && (
-            <>
-              <InputGroup>
-                <Input
-                  name="otp"
-                  value={form?.otp}
-                  onChange={handleChanges}
-                  variant={"flushed"}
-                  placeholder="enter otp"
-                />
-                {form?.otp?.length === 6 && (
-                  <InputRightElement>
-                    <Button
-                      onClick={handleVerify}
-                      variant={"link"}
-                      colorScheme="secondary"
-                    >
-                      Verify
-                    </Button>
-                  </InputRightElement>
-                )}
-              </InputGroup>
-              <Button
-                variant={"link"}
-                colorScheme="secondary"
-                onClick={handleResend}
-              >
-                Resend OTP
-              </Button>
-            </>
-          )}
+          <PasswordBox error={error} setError={setError} {...common} />
         </>
       )}
     </>

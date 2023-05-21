@@ -1,31 +1,28 @@
-import React from "react";
-import { InputBox } from "./InputBox";
+import React, { useState } from "react";
 import { Lock } from "Assets/svgs/Form";
 import { Text } from "@chakra-ui/react";
-import { PasswordError } from "./PasswordError";
 import Submit from "./Submit";
+import { InputBox } from "components/Auth/InputBox";
+import { PasswordError } from "components/Auth/PasswordError";
 
 interface PasswordBoxProps {
   error?: any;
   form?: any;
   setError?: any;
   onChange?: any;
-  loading: boolean;
-  setLoading?: any;
 }
 
 const PasswordBox: React.FC<PasswordBoxProps> = ({
   onChange,
-  loading,
-  setLoading,
   setError,
   form,
   error,
 }) => {
+    const [loading, setLoading] = useState<boolean>(false);
   const common = { onChange, form };
   return (
     <>
-      <InputBox Icon={Lock} title={"Password"} {...common} type="password" />
+      <InputBox Icon={Lock} title={"Password"}  {...common} type="password" />
       {error?.password && (
         <Text w="100%" color="red">
           {error?.password}
