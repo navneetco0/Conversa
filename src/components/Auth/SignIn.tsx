@@ -6,9 +6,11 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "../../api/Authentication/login";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../app/authSlice";
+import { useNavigate } from "react-router-dom";
 
 export const SignIn: FC = () => {
   const toast = useToast();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const mutation = useMutation({
@@ -57,6 +59,10 @@ export const SignIn: FC = () => {
     mutation.mutate(form);
   };
 
+  const handleForgotPassword = () => {
+    navigate("/recovery-password");
+  };
+
   return (
     <>
       <InputBox Icon={Email} title={"Email"} {...common} />
@@ -72,6 +78,14 @@ export const SignIn: FC = () => {
         </Text>
       )}
       <Button
+        onClick={handleForgotPassword}
+        alignSelf={"flex-end"}
+        variant={"link"}
+      >
+        Forgot Password
+      </Button>
+      <Button
+        w="100%"
         onClick={handleSubmit}
         isLoading={loading}
         colorScheme="secondary"
