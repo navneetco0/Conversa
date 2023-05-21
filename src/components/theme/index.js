@@ -23,6 +23,7 @@ export const theme = extendTheme({
             300:"#4299E1",
             200:"#63B3ED",
             100:"#90CDF4",
+            50: "#EBF8FF",
         },
         tertiary:{
             900:"#9B2C2C",

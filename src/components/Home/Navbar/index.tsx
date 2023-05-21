@@ -14,11 +14,13 @@ const Navbar: React.FC<NavbarProps> = ({data}) => {
       top={0}
       left={0}
       w={"100%"}
-      bg={"secondary.100"}
       paddingX={5}
       paddingY={1}
       h="70px"
+      bg="white"
       justifyContent={"space-between"}
+      // boxShadow={"0px 0px 10px 0px rgba(0,0,0,0.1)"}
+      borderBottomWidth={1}
     >
         <Box w="50px" h="50px">
           <Logo/>

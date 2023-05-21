@@ -1,4 +1,13 @@
-import { Box, Container, HStack, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Flex,
+  HStack,
+  Input,
+  InputGroup,
+  Spinner,
+  Tooltip,
+} from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { tokenAuth } from "api/Authentication/tokenAuth";
 import Navbar from "components/Home/Navbar";
@@ -13,6 +22,11 @@ export const Home: FC = () => {
     }
   }, [data]);
 
+  const [search, setSearch] = React.useState<string>("");
+  const [searchResult, setSearchResult] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [loadingChat, setLoadingChat] = React.useState<boolean>(false);
+
   if (!data?.user)
     return (
       <Container maxW={"xl"} centerContent>
@@ -21,11 +35,20 @@ export const Home: FC = () => {
     );
 
   return (
-    <Container maxW={"xl"} centerContent>
+    <Box w="100%">
       <Navbar data={data?.user} />
-      <HStack minH="100vh">
-        <Box></Box>
-      </HStack>
-    </Container>
+      <Flex minH="100vh" w="100%">
+        <Box w="300px" minH={"100vh"} p={2} pt={"80px"} borderRightWidth={1}>
+          <Box p={2} w={"full"} bg="gray.100" rounded={"10px"} h={"full"}>
+            <Tooltip label="Search Users to chat" hasArrow placeContent={'bottom-end'} aria-label="Search">
+              <InputGroup>
+                <Input bg="white" variant={"outline"} placeholder="Search Users to chat" />
+              </InputGroup>
+            </Tooltip>
+          </Box>
+        </Box>
+        <Box flexGrow={1} minH={"100vh"}></Box>
+      </Flex>
+    </Box>
   );
 };
