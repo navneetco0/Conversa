@@ -1,6 +1,7 @@
 import React from "react";
-import { HStack, Text } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import MenuBtn from "./MenuBtn";
+import { Logo } from "Assets/svgs/Images";
 
 interface NavbarProps {
     data: any;
@@ -15,10 +16,13 @@ const Navbar: React.FC<NavbarProps> = ({data}) => {
       w={"100%"}
       bg={"secondary.100"}
       paddingX={5}
-      paddingY={3}
+      paddingY={1}
+      h="70px"
       justifyContent={"space-between"}
     >
-        <Text fontWeight={"bold"}>Chit-Chat</Text>
+        <Box w="50px" h="50px">
+          <Logo/>
+        </Box>
         <MenuBtn data={data} />
     </HStack>
   );

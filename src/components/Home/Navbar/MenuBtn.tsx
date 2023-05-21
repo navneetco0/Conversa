@@ -30,10 +30,10 @@ const MenuBtn: React.FC<MenuBtnProps> = ({ data }) => {
   return (
     <Menu>
       <MenuButton as={Button} variant={"unstyled"}>
-        <Avatar name={data?.username} src={data?.profile_pic} />
+        <Avatar name={data?.username} size={"md"} src={data?.profile_pic} />
       </MenuButton>
       <MenuList>
-        <MenuItem onClick={showProfile} >Profile</MenuItem>
+        {/* <MenuItem onClick={showProfile} >Profile</MenuItem> */}
         <MenuItem onClick={Logout} >Log Out</MenuItem>
       </MenuList>
     </Menu>

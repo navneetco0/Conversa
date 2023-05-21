@@ -1,4 +1,4 @@
-import { Container, Spinner } from "@chakra-ui/react";
+import { Box, Container, HStack, Spinner } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { tokenAuth } from "api/Authentication/tokenAuth";
 import Navbar from "components/Home/Navbar";
@@ -23,6 +23,9 @@ export const Home: FC = () => {
   return (
     <Container maxW={"xl"} centerContent>
       <Navbar data={data?.user} />
+      <HStack minH="100vh">
+        <Box></Box>
+      </HStack>
     </Container>
   );
 };
