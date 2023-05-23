@@ -19,7 +19,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ data }) => {
     mutation.mutate(id)
   }
   return (
-    <Flex flexDir={"column"} gap={"8px"} h={"100%"} mt="50px">
+    <Flex flexDir={"column"} gap={"8px"} mt="80px">
       {data.map((profile: any, index: number) => (
         <Flex
           onClick={()=>handleChat(profile._id)}

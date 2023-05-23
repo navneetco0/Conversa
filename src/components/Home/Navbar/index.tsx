@@ -18,8 +18,8 @@ const Navbar: React.FC<NavbarProps> = ({data}) => {
       paddingY={1}
       h="70px"
       bg="white"
+      zIndex={3}
       justifyContent={"space-between"}
-      // boxShadow={"0px 0px 10px 0px rgba(0,0,0,0.1)"}
       borderBottomWidth={1}
     >
         <Box w="50px" h="50px">

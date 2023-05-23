@@ -5,6 +5,7 @@ import React from "react";
 import { Crop } from "components/Helper/Crop";
 
 interface ProfilePicProps {
+  title: string;
   file: any;
   display: boolean;
   setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,6 +15,7 @@ interface ProfilePicProps {
 }
 
 export const ProfilePic: React.FC<ProfilePicProps> = ({
+  title,
   file,
   display,
   setDisplay,
@@ -40,7 +42,7 @@ export const ProfilePic: React.FC<ProfilePicProps> = ({
             <Box w={200} h={200} className="overlay">
               <Camera />
               <Text fontSize="xl" color="white" fontWeight="black">
-                Select Profile Picture
+                Select {title}
               </Text>
             </Box>
             <input

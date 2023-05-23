@@ -83,7 +83,7 @@ const MyChat = () => {
     setChatId(id);
   }
   return (
-    <Flex flexDir={"column"} gap={"8px"} h={"100%"} mt="50px">
+    <Flex flexDir={"column"} gap={"8px"} mt="80px">
       {data?.chats?.map((chat: any, index: number) =>
         chat?.isGroupChat ? (
           <Group

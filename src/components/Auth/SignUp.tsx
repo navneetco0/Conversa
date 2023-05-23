@@ -41,6 +41,7 @@ export const SignUp: FC = () => {
   return (
     <>
       <ProfilePic
+        title="Profile Picture"
         display={display}
         setDisplay={setDisplay}
         isDisabled={loading}

@@ -7,6 +7,7 @@ import {
   InputGroup,
   InputRightElement,
   Spinner,
+  Text,
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
@@ -14,6 +15,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Search } from "Assets/svgs/Directions";
 import { tokenAuth } from "api/Authentication/tokenAuth";
 import searchUser from "api/User/searchUser";
+import CreateGroupChat from "components/Home/Chat/CreateGroupChat";
 import ListSkeleton from "components/Home/ListSkeleton";
 import MyChat from "components/Home/MyChat";
 import Navbar from "components/Home/Navbar";
@@ -69,11 +71,11 @@ export const Home: FC = () => {
       <Navbar data={data?.user} />
       <Flex minH="100vh" w="100%">
         <Box
-          w={["100%","100%", "300px"]}
+          w={["100%", "100%", "300px"]}
           minH={"100vh"}
-          p={2}
           pt={"80px"}
           borderRightWidth={1}
+          position="relative"
         >
           <Box
             p={2}
@@ -82,37 +84,51 @@ export const Home: FC = () => {
             overflow={"auto"}
             rounded={"10px"}
             h={"full"}
-            position="relative"
           >
-            <Tooltip
-              label="Search Users to chat"
-              hasArrow
-              placeContent={"bottom-end"}
-              aria-label="Search"
+            <Box
+              top={"70px"}
+              zIndex={2}
+              left={0}
+              p={2}
+              bg={"secondary.100"}
+              w="100%"
+              position={"absolute"}
             >
-              <InputGroup top={0} left={0} p={2} position={"absolute"} >
-                <Input
-                  bg="white"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  variant={"outline"}
-                  placeholder="Search Users to chat"
-                />
-                {search && (
-                  <InputRightElement>
-                    {loading ? (
-                      <Spinner />
-                    ) : (
-                      <Button variant={"unstyled"} onClick={handleSearch}>
-                        <Search height="30px" fill="primary.900" />
-                      </Button>
-                    )}
-                  </InputRightElement>
-                )}
-              </InputGroup>
-            </Tooltip>
+              <CreateGroupChat/>
+              <Tooltip
+                label="Search Users to chat"
+                hasArrow
+                placeContent={"bottom-end"}
+                aria-label="Search"
+              >
+                <InputGroup w="100%" size={'sm'}>
+                  <Input
+                    bg="white"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    variant={"outline"}
+                    placeholder="Search Users to chat"
+                  />
+                  {search && (
+                    <InputRightElement>
+                      {loading ? (
+                        <Spinner />
+                      ) : (
+                        <Button variant={"unstyled"} onClick={handleSearch}>
+                          <Search height="30px" fill="primary.900" />
+                        </Button>
+                      )}
+                    </InputRightElement>
+                  )}
+                </InputGroup>
+              </Tooltip>
+            </Box>
             {loading ? <ListSkeleton /> : null}
-            {!!searchResult.length ? <SearchResult data={searchResult} /> : <MyChat />}
+            {!!searchResult.length ? (
+              <SearchResult data={searchResult} />
+            ) : (
+              <MyChat />
+            )}
           </Box>
         </Box>
         <Box flexGrow={1} minH={"100vh"}></Box>
