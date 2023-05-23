@@ -1,4 +1,8 @@
 import { Avatar, Box, Flex, Stack, Text, VStack } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
+import accessChat from "api/Chat/accessChat";
+import searchUser from "api/User/searchUser";
+import { setMessages } from "app/chatSlice";
 import React from "react";
 
 interface SearchResultProps {
@@ -6,8 +10,14 @@ interface SearchResultProps {
 }
 
 const SearchResult: React.FC<SearchResultProps> = ({ data }) => {
+  const mutation = useMutation({
+    mutationFn: accessChat,
+    onSuccess: (data) => {
+      setMessages(data);
+    }
+  })
   const handleChat = (id: string) =>{
-
+    mutation.mutate(id)
   }
   return (
     <Flex flexDir={"column"} gap={"8px"} h={"100%"} mt="50px">
