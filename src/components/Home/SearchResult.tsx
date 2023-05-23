@@ -1,7 +1,6 @@
 import { Avatar, Box, Flex, Stack, Text, VStack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import accessChat from "api/Chat/accessChat";
-import searchUser from "api/User/searchUser";
 import { setMessages } from "app/chatSlice";
 import React from "react";
 

@@ -69,7 +69,7 @@ export const Home: FC = () => {
       <Navbar data={data?.user} />
       <Flex minH="100vh" w="100%">
         <Box
-          w="300px"
+          w={["100%","100%", "300px"]}
           minH={"100vh"}
           p={2}
           pt={"80px"}
@@ -90,7 +90,7 @@ export const Home: FC = () => {
               placeContent={"bottom-end"}
               aria-label="Search"
             >
-              <InputGroup position={"absolute"} w="266px">
+              <InputGroup top={0} left={0} p={2} position={"absolute"} >
                 <Input
                   bg="white"
                   value={search}
@@ -112,7 +112,7 @@ export const Home: FC = () => {
               </InputGroup>
             </Tooltip>
             {loading ? <ListSkeleton /> : null}
-            {!!searchResult ? <SearchResult data={searchResult} /> : <MyChat />}
+            {!!searchResult.length ? <SearchResult data={searchResult} /> : <MyChat />}
           </Box>
         </Box>
         <Box flexGrow={1} minH={"100vh"}></Box>
