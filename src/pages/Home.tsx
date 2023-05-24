@@ -140,7 +140,7 @@ export const Home: FC = () => {
             )}
           </Box>
         </Box>
-        {selected&&<ChatBox setSelected={setSelected} selected={selected} user={user} users={users?.chats} />}
+        {selected&&<ChatBox setSelected={setSelected} selected={selected} user={user?.user} users={users?.chats} />}
       </Flex>
     </Box>
   );

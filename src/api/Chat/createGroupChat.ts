@@ -4,7 +4,7 @@ import { api } from "constant/helper";
 const createGroupChat = async (form: any) => {
   try {;
     const token = localStorage.getItem("chit-chat");
-    const { GroupPic } = form;
+    const { GroupPic, prev_pic } = form;
     let res;
     if (GroupPic) {
       res = await axios.post(

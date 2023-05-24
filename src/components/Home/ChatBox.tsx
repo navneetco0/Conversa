@@ -2,6 +2,7 @@ import { Avatar, Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 import { Left } from "Assets/svgs/Directions";
 import { getSender } from "components/Helper/Chat";
 import React from "react";
+import UpdateGroupChat from "./Chat/UpdateGroupChat";
 
 interface ChatBoxProps {
   selected: string;
@@ -35,7 +36,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({
         h={"full"}
       >
         <Flex
-          gap={"10px"}
           zIndex={2}
           left={0}
           top={0}
@@ -43,7 +43,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
           bg={"secondary.100"}
           w="100%"
           position={"absolute"}
-          alignItems={"center"}
+          justifyContent={"space-between"}
         >
           <Header
             avatar={isGroupChat ? chat?.GroupPicture : sender?.profile_pic}
@@ -55,6 +55,14 @@ const ChatBox: React.FC<ChatBoxProps> = ({
             }
             setSelected={setSelected}
           />
+          {isGroupChat && chat.groupAdmin?._id === user?._id && (
+            <UpdateGroupChat
+              profile_pic={chat?.GroupPicture}
+              chatName={chat?.chatName}
+              users={chat?.users}
+              id={chat?._id}
+            />
+          )}
         </Flex>
       </Box>
     </Box>
@@ -78,8 +86,12 @@ const Header: React.FC<HeaderProps> = ({
     setSelected(null);
   };
   return (
-    <>
-      <Button display={["inline", "inline", "none"]} variant={"unstyled"} onClick={handleBack}>
+    <Flex gap={"10px"} alignItems={"center"}>
+      <Button
+        display={["inline", "inline", "none"]}
+        variant={"unstyled"}
+        onClick={handleBack}
+      >
         <Left height="30px" />
       </Button>
       <Avatar src={avatar} />
@@ -94,7 +106,7 @@ const Header: React.FC<HeaderProps> = ({
           {detail}
         </Text>
       </Box>
-    </>
+    </Flex>
   );
 };
 

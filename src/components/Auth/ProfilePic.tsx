@@ -23,7 +23,8 @@ export const ProfilePic: React.FC<ProfilePicProps> = ({
   isDisabled,
   ...other
 }) => {
-  const src = file ? URL.createObjectURL(file) : null;
+  const src =
+    typeof file === "string" ? file : file ? URL.createObjectURL(file) : null;
 
   return (
     <>
