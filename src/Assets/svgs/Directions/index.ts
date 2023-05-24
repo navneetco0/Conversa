@@ -1,3 +1,4 @@
 import Search from "./Search";
+import Left from "./Left";
 
-export { Search };
+export { Search, Left };

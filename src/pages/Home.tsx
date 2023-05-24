@@ -75,6 +75,7 @@ export const Home: FC = () => {
       <Navbar data={data?.user} />
       <Flex minH="100vh" w="100%">
         <Box
+          display={[selected?"none":"block", selected?"none":"block", "block"]}
           w={["100%", "100%", "300px"]}
           minH={"100vh"}
           pt={"80px"}
@@ -139,7 +140,7 @@ export const Home: FC = () => {
             )}
           </Box>
         </Box>
-        <ChatBox selected={selected} user={user} users={users} />
+        {selected&&<ChatBox setSelected={setSelected} selected={selected} user={user} users={users?.chats} />}
       </Flex>
     </Box>
   );

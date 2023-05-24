@@ -34,7 +34,6 @@ const SenderCard: React.FC<SenderCardProps> = ({ id, data, ...other }) => {
         </Text>
         {data?.latestMessage && (
           <Text fontSize="xs">
-            <b>{data?.latestMessage.sender.name} : </b>
             {data?.latestMessage.content.length > 50
               ? data?.latestMessage.content.substring(0, 51) + "..."
               : data?.latestMessage.content}
@@ -86,12 +85,6 @@ const MyChat: React.FC<MyChatProps> = ({ selected, setSelected, data, user }) =>
     setSelected(id);
     setChatId(id);
   };
-  useEffect(() => {
-    if (data?.chats?.length > 0) {
-      setSelected(data?.chats[0]._id);
-      setChatId(data?.chats[0]._id);
-    }
-  }, [data]);
   return (
     <Flex flexDir={"column"} gap={"8px"} mt="80px">
       {data?.chats?.map((chat: any, index: number) =>
