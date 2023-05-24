@@ -8,11 +8,14 @@ import {
   InputGroup,
   InputRightElement,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { Left, Right } from "Assets/svgs/Directions";
 import { getSender } from "components/Helper/Chat";
 import React from "react";
 import UpdateGroupChat from "./Chat/UpdateGroupChat";
+import { useMutation } from "@tanstack/react-query";
+import sendMessage from "api/Message/sendMessage";
 
 interface ChatBoxProps {
   selected: string;
@@ -26,11 +29,32 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   user,
   setSelected,
 }) => {
+  const toast = useToast();
+  const mutation = useMutation({
+    mutationFn: sendMessage,
+    onSuccess: (data) => {
+      if (data?.message) {
+        toast({
+            title: data?.message,
+            status: "info",
+            duration: 9000,
+            isClosable: true,
+            position: "top",
+        })
+      }
+    },
+  });
   const chat = users?.find((user: any) => user._id === selected);
   const [value, setValue] = React.useState("");
   const isGroupChat = chat?.isGroupChat;
   const sender = isGroupChat ? null : getSender(user, chat?.users);
   const handleSubmit = () => {
+    if (value === "") return;
+    const form = {
+      content: value,
+      chatId: selected,
+    };
+    mutation.mutate(form);
     setValue("");
   };
   const handleKey = (e: any) => {
