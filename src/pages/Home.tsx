@@ -26,6 +26,7 @@ import React, { FC, useEffect } from "react";
 export const Home: FC = () => {
   const { data } = useQuery(["user"], tokenAuth);
   const [search, setSearch] = React.useState<string>("");
+  const { data: user } = useQuery(["user"], tokenAuth);
   const { data: users } = useQuery(["users"], getChat);
   const [selected, setSelected] = React.useState<any>(null);
   const [searchResult, setSearchResult] = React.useState<any[]>([]);
@@ -134,11 +135,11 @@ export const Home: FC = () => {
             {!!searchResult.length ? (
               <SearchResult data={searchResult} />
             ) : (
-              <MyChat data={users} selected={selected} setSelected={setSelected} />
+              <MyChat data={users} user={user} selected={selected} setSelected={setSelected} />
             )}
           </Box>
         </Box>
-        <ChatBox selected={selected} users={users} />
+        <ChatBox selected={selected} user={user} users={users} />
       </Flex>
     </Box>
   );

@@ -30,7 +30,7 @@ const SenderCard: React.FC<SenderCardProps> = ({ id, data, ...other }) => {
       <Avatar src={sender?.profile_pic} />
       <Box>
         <Text fontWeight={"black"} className="name">
-          {sender.name}
+          {sender?.name}
         </Text>
         {data?.latestMessage && (
           <Text fontSize="xs">
@@ -78,11 +78,10 @@ interface MyChatProps {
   selected: string;
   setSelected: (id: string) => void;
   data: any;
+  user: any;
 }
 
-const MyChat: React.FC<MyChatProps> = ({ selected, setSelected, data }) => {
-  const { data: user } = useQuery(["user"], tokenAuth);
-
+const MyChat: React.FC<MyChatProps> = ({ selected, setSelected, data, user }) => {
   const handleClick = (id: string) => {
     setSelected(id);
     setChatId(id);
