@@ -1,12 +1,14 @@
 import {
   Box,
   Button,
+  Center,
   Container,
   Flex,
   Input,
   InputGroup,
   InputRightElement,
   Spinner,
+  Text,
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
@@ -75,7 +77,11 @@ export const Home: FC = () => {
       <Navbar data={data?.user} />
       <Flex minH="100vh" w="100%">
         <Box
-          display={[selected?"none":"block", selected?"none":"block", "block"]}
+          display={[
+            selected ? "none" : "block",
+            selected ? "none" : "block",
+            "block",
+          ]}
           w={["100%", "100%", "300px"]}
           minH={"100vh"}
           pt={"80px"}
@@ -112,7 +118,7 @@ export const Home: FC = () => {
                     value={search}
                     onChange={(e) => {
                       const { value } = e.target;
-                      if(!value) setSearchResult([]);
+                      if (!value) setSearchResult([]);
                       setSearch(value);
                     }}
                     variant={"outline"}
@@ -136,11 +142,27 @@ export const Home: FC = () => {
             {!!searchResult.length ? (
               <SearchResult data={searchResult} />
             ) : (
-              <MyChat data={users} user={user} selected={selected} setSelected={setSelected} />
+              <MyChat
+                data={users}
+                user={user}
+                selected={selected}
+                setSelected={setSelected}
+              />
             )}
           </Box>
         </Box>
-        {selected&&<ChatBox setSelected={setSelected} selected={selected} user={user?.user} users={users?.chats} />}
+        {selected ? (
+          <ChatBox
+            setSelected={setSelected}
+            selected={selected}
+            user={user?.user}
+            users={users?.chats}
+          />
+        ) : (
+          <Center w="100%" minH={"100vh"}>
+            <Text fontWeight={"black"}>Please Select atleast 1 chat</Text>
+          </Center>
+        )}
       </Flex>
     </Box>
   );

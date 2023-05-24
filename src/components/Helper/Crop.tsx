@@ -25,15 +25,21 @@ export const Crop: FC<CropProps> = ({
     height: number;
   } | null>(null);
 
-  const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-  }, []);
+  const onCropComplete = useCallback(
+    (croppedArea: Area, croppedAreaPixels: Area) => {
+      setCroppedAreaPixels(croppedAreaPixels);
+    },
+    []
+  );
 
   const [value, setValue] = useState(1);
 
   const onCrop = async () => {
-    if(croppedAreaPixels){
-      const croppedImageUrl = await getCroppedImg(profile_pic, croppedAreaPixels);
+    if (croppedAreaPixels) {
+      const croppedImageUrl = await getCroppedImg(
+        profile_pic,
+        croppedAreaPixels
+      );
       const fileListArray = Array.from([croppedImageUrl]);
       handleChange({
         target: {

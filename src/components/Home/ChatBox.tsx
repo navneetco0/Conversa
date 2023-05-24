@@ -1,5 +1,15 @@
-import { Avatar, Box, Button, Center, Flex, Text } from "@chakra-ui/react";
-import { Left } from "Assets/svgs/Directions";
+import {
+  Avatar,
+  Box,
+  Button,
+  Center,
+  Flex,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Text,
+} from "@chakra-ui/react";
+import { Left, Right } from "Assets/svgs/Directions";
 import { getSender } from "components/Helper/Chat";
 import React from "react";
 import UpdateGroupChat from "./Chat/UpdateGroupChat";
@@ -17,14 +27,17 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   setSelected,
 }) => {
   const chat = users?.find((user: any) => user._id === selected);
+  const [value, setValue] = React.useState("");
   const isGroupChat = chat?.isGroupChat;
   const sender = isGroupChat ? null : getSender(user, chat?.users);
-  if (!selected)
-    return (
-      <Center w="100%" minH={"100vh"}>
-        <Text fontWeight={"black"}>Please Select atleast 1 chat</Text>
-      </Center>
-    );
+  const handleSubmit = () => {
+    setValue("");
+  };
+  const handleKey = (e: any) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
   return (
     <Box flexGrow={1} minH={"100vh"} pt={"70px"}>
       <Box
@@ -64,6 +77,30 @@ const ChatBox: React.FC<ChatBoxProps> = ({
             />
           )}
         </Flex>
+        <Box
+          left={0}
+          position={"absolute"}
+          bottom="10px"
+          w="100%"
+          bg="secondary.100"
+          p={2}
+        >
+          <InputGroup>
+            <Input
+              value={value}
+              onKeyDown={handleKey}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="Please type your chat here..."
+              bg="white"
+              variant={"outline"}
+            />
+            <InputRightElement>
+              <Button onClick={handleSubmit} variant={"unstyled"}>
+                <Right height="30px" />
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </Box>
       </Box>
     </Box>
   );
