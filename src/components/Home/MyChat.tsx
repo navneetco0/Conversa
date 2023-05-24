@@ -4,7 +4,7 @@ import { tokenAuth } from "api/Authentication/tokenAuth";
 import getChat from "api/Chat/getChat";
 import { setChatId } from "app/chatSlice";
 import { getSender } from "components/Helper/Chat";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface SenderCardProps {
   data: any;
@@ -74,14 +74,25 @@ const Group = ({ data, ...other }: any) => {
   );
 };
 
-const MyChat = () => {
+interface MyChatProps {
+  selected: string;
+  setSelected: (id: string) => void;
+  data: any;
+}
+
+const MyChat: React.FC<MyChatProps> = ({ selected, setSelected, data }) => {
   const { data: user } = useQuery(["user"], tokenAuth);
-  const [selected, setSelected] = React.useState<any>(null);
-  const { data } = useQuery(["users"], getChat);
-  const handleClick = (id: string)=>{
+
+  const handleClick = (id: string) => {
     setSelected(id);
     setChatId(id);
-  }
+  };
+  useEffect(() => {
+    if (data?.chats?.length > 0) {
+      setSelected(data?.chats[0]._id);
+      setChatId(data?.chats[0]._id);
+    }
+  }, [data]);
   return (
     <Flex flexDir={"column"} gap={"8px"} mt="80px">
       {data?.chats?.map((chat: any, index: number) =>

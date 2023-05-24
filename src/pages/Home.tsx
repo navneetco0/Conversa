@@ -7,15 +7,16 @@ import {
   InputGroup,
   InputRightElement,
   Spinner,
-  Text,
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Search } from "Assets/svgs/Directions";
 import { tokenAuth } from "api/Authentication/tokenAuth";
+import getChat from "api/Chat/getChat";
 import searchUser from "api/User/searchUser";
 import CreateGroupChat from "components/Home/Chat/CreateGroupChat";
+import ChatBox from "components/Home/ChatBox";
 import ListSkeleton from "components/Home/ListSkeleton";
 import MyChat from "components/Home/MyChat";
 import Navbar from "components/Home/Navbar";
@@ -25,6 +26,8 @@ import React, { FC, useEffect } from "react";
 export const Home: FC = () => {
   const { data } = useQuery(["user"], tokenAuth);
   const [search, setSearch] = React.useState<string>("");
+  const { data: users } = useQuery(["users"], getChat);
+  const [selected, setSelected] = React.useState<any>(null);
   const [searchResult, setSearchResult] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [loadingChat, setLoadingChat] = React.useState<boolean>(false);
@@ -94,18 +97,22 @@ export const Home: FC = () => {
               w="100%"
               position={"absolute"}
             >
-              <CreateGroupChat/>
+              <CreateGroupChat />
               <Tooltip
                 label="Search Users to chat"
                 hasArrow
                 placeContent={"bottom-end"}
                 aria-label="Search"
               >
-                <InputGroup w="100%" size={'sm'}>
+                <InputGroup w="100%" size={"sm"}>
                   <Input
                     bg="white"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      if(!value) setSearchResult([]);
+                      setSearch(value);
+                    }}
                     variant={"outline"}
                     placeholder="Search Users to chat"
                   />
@@ -127,11 +134,11 @@ export const Home: FC = () => {
             {!!searchResult.length ? (
               <SearchResult data={searchResult} />
             ) : (
-              <MyChat />
+              <MyChat data={users} selected={selected} setSelected={setSelected} />
             )}
           </Box>
         </Box>
-        <Box flexGrow={1} minH={"100vh"}></Box>
+        <ChatBox selected={selected} users={users} />
       </Flex>
     </Box>
   );
