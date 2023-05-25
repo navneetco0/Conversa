@@ -3,7 +3,6 @@ import { api } from "constant/helper";
 
 const sendMessage = async(form: any) =>{
     try {
-        console.log(form);
         const token = localStorage.getItem("chit-chat");
         const { data } = await axios.post(`${api}/api/message`, form, {
             headers: {
