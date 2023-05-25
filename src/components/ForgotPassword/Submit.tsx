@@ -1,9 +1,9 @@
 import { Button, useToast } from "@chakra-ui/react";
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
-import { Validation } from "components/Auth/Validation";
 import { useNavigate } from "react-router-dom";
-import forgotPassword from "api/Authentication/forgotSend";
+import forgotPassword from "../../api/Authentication/forgotSend";
+import { Validation } from "../Auth/Validation";
 
 interface SubmitProps {
   form?: any;

@@ -2,7 +2,7 @@ import { Box, Circle, Flex, Image, Text } from "@chakra-ui/react";
 import { Camera, User } from "../../Assets/svgs/Form";
 import "./Auth.css";
 import React from "react";
-import { Crop } from "components/Helper/Crop";
+import { Crop } from "../Helper/Crop";
 
 interface ProfilePicProps {
   title: string;

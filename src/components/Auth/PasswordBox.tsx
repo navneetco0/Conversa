@@ -1,9 +1,9 @@
 import React from "react";
 import { InputBox } from "./InputBox";
-import { Lock } from "Assets/svgs/Form";
 import { Text } from "@chakra-ui/react";
 import { PasswordError } from "./PasswordError";
 import Submit from "./Submit";
+import { Lock } from "../../Assets/svgs/Form";
 
 interface PasswordBoxProps {
   error?: any;

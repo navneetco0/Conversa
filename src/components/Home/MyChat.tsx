@@ -1,7 +1,7 @@
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
-import { setChatId } from "app/chatSlice";
-import { getSender } from "components/Helper/Chat";
 import React from "react";
+import { getSender } from "../Helper/Chat";
+import { setChatId } from "../../app/chatSlice";
 
 interface SenderCardProps {
   data: any;

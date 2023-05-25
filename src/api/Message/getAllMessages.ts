@@ -1,5 +1,5 @@
 import axios from "axios";
-import { api } from "constant/helper";
+import { api } from "../../constant/helper";
 
 const getAllMessages = async(id: string) =>{
     try {

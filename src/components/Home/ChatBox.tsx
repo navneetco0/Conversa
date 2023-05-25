@@ -9,14 +9,14 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Left, Right } from "Assets/svgs/Directions";
-import { getSender } from "components/Helper/Chat";
 import React from "react";
 import UpdateGroupChat from "./Chat/UpdateGroupChat";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import sendMessage from "api/Message/sendMessage";
-import getAllMessages from "api/Message/getAllMessages";
 import Chat from "./Chat/Chat";
+import getAllMessages from "../../api/Message/getAllMessages";
+import sendMessage from "../../api/Message/sendMessage";
+import { getSender } from "../Helper/Chat";
+import { Left, Right } from "../../Assets/svgs/Directions";
 
 interface ChatBoxProps {
   selected: string;

@@ -2,9 +2,9 @@ import { Button, useToast } from "@chakra-ui/react";
 import React from "react";
 import { Validation } from "./Validation";
 import { useMutation } from "@tanstack/react-query";
-import { signUp } from "api/Authentication/signUp";
 import { useDispatch } from "react-redux";
-import { setToken } from "app/authSlice";
+import { signUp } from "../../api/Authentication/signUp";
+import { setToken } from "../../app/authSlice";
 
 interface SubmitProps {
   form?: any;

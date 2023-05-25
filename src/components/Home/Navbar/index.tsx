@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, HStack, Text } from "@chakra-ui/react";
 import MenuBtn from "./MenuBtn";
-import { Logo } from "Assets/svgs/Images";
+import { Logo } from "../../../Assets/svgs/Images";
 
 interface NavbarProps {
     data: any;

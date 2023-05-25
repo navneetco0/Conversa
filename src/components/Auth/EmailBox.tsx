@@ -9,11 +9,11 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Email } from "Assets/svgs/Form";
 import { useMutation } from "@tanstack/react-query";
-import verifyMail from "api/Authentication/verifyMail";
-import resendOTP from "api/Authentication/resendOTP";
-import verifyOTP from "api/Authentication/verifyOTP";
+import { Email } from "../../Assets/svgs/Form";
+import verifyMail from "../../api/Authentication/verifyMail";
+import resendOTP from "../../api/Authentication/resendOTP";
+import verifyOTP from "../../api/Authentication/verifyOTP";
 
 interface EmailBoxProps {
   error?: any;

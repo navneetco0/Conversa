@@ -11,9 +11,9 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^29.5.1",
-    "@types/node": "^20.2.1",
-    "@types/react": "^18.2.6",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.32",
+    "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
     "axios": "^1.4.0",
     "framer-motion": "^10.12.8",
@@ -23,7 +23,8 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
-    "typescript": "^5.0.4",
+    "socket.io-client": "^4.6.1",
+    "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -49,8 +50,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@tanstack/eslint-plugin-query": "^4.29.4"
   }
 }

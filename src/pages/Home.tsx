@@ -13,17 +13,17 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Search } from "Assets/svgs/Directions";
-import { tokenAuth } from "api/Authentication/tokenAuth";
-import getChat from "api/Chat/getChat";
-import searchUser from "api/User/searchUser";
-import CreateGroupChat from "components/Home/Chat/CreateGroupChat";
-import ChatBox from "components/Home/ChatBox";
-import ListSkeleton from "components/Home/ListSkeleton";
-import MyChat from "components/Home/MyChat";
-import Navbar from "components/Home/Navbar";
-import SearchResult from "components/Home/SearchResult";
 import React, { FC, useEffect } from "react";
+import { tokenAuth } from "../api/Authentication/tokenAuth";
+import getChat from "../api/Chat/getChat";
+import searchUser from "../api/User/searchUser";
+import Navbar from "../components/Home/Navbar";
+import CreateGroupChat from "../components/Home/Chat/CreateGroupChat";
+import { Search } from "../Assets/svgs/Directions";
+import ListSkeleton from "../components/Home/ListSkeleton";
+import SearchResult from "../components/Home/SearchResult";
+import ChatBox from "../components/Home/ChatBox";
+import MyChat from "../components/Home/MyChat";
 
 export const Home: FC = () => {
   const { data } = useQuery(["user"], tokenAuth);

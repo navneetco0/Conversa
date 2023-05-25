@@ -1,5 +1,5 @@
 import axios from "axios";
-import { api } from "constant/helper";
+import { api } from "../../constant/helper";
 
 const verifyMail = async (email: string):Promise<any> => {
   try {

@@ -1,8 +1,8 @@
 import { Container, Flex, Text, VStack } from "@chakra-ui/react";
-import { LinkButton } from "components/Auth/LinkButton";
-import FormHandler from "components/ForgotPassword/FormHandler";
 import React, { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import { LinkButton } from "../components/Auth/LinkButton";
+import FormHandler from "../components/ForgotPassword/FormHandler";
 
 const ForgotPassword: FC = () => {
   const navigate = useNavigate();

@@ -4,7 +4,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
 import PrivateRoute from "./PrivateRoute";
-import ForgotPassword from "pages/ForgotPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const Routers: React.FC = () => {
   return (

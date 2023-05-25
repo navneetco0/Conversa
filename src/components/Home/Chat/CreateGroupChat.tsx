@@ -17,10 +17,10 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import createGroupChat from "api/Chat/createGroupChat";
-import searchUser from "api/User/searchUser";
-import { ProfilePic } from "components/Auth/ProfilePic";
 import React from "react";
+import createGroupChat from "../../../api/Chat/createGroupChat";
+import searchUser from "../../../api/User/searchUser";
+import { ProfilePic } from "../../Auth/ProfilePic";
 
 interface Form {
   profile_pic?: any;

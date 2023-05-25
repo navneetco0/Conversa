@@ -7,12 +7,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
-import { Email } from "Assets/svgs/Form";
-import resendOTP from "api/Authentication/resendOTP";
-import sendForgotOTP from "api/Authentication/sendForgotOTP";
-import { InputBox } from "components/Auth/InputBox";
 import React from "react";
 import PasswordBox from "./PasswordBox";
+import sendForgotOTP from "../../api/Authentication/sendForgotOTP";
+import resendOTP from "../../api/Authentication/resendOTP";
+import { InputBox } from "../Auth/InputBox";
+import { Email } from "../../Assets/svgs/Form";
 
 const FormHandler: React.FC = () => {
   const toast = useToast();
