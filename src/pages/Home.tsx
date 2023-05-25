@@ -22,13 +22,12 @@ import CreateGroupChat from "../components/Home/Chat/CreateGroupChat";
 import { Search } from "../Assets/svgs/Directions";
 import ListSkeleton from "../components/Home/ListSkeleton";
 import SearchResult from "../components/Home/SearchResult";
-import ChatBox from "../components/Home/ChatBox";
+import SingleChatBox from "../components/Home/SingleChatBox";
 import MyChat from "../components/Home/MyChat";
 
 export const Home: FC = () => {
-  const { data } = useQuery(["user"], tokenAuth);
-  const [search, setSearch] = React.useState<string>("");
   const { data: user } = useQuery(["user"], tokenAuth);
+  const [search, setSearch] = React.useState<string>("");
   const { data: users } = useQuery(["users"], getChat);
   const [selected, setSelected] = React.useState<any>(null);
   const [searchResult, setSearchResult] = React.useState<any[]>([]);
@@ -53,13 +52,13 @@ export const Home: FC = () => {
   });
 
   useEffect(() => {
-    if (data?.message === "invalid token") {
+    if (user?.message === "invalid token") {
       localStorage.removeItem("chit-chat");
       window.location.href = "/login";
     }
-  }, [data]);
+  }, [user]);
 
-  if (!data?.user)
+  if (!user)
     return (
       <Container maxW={"xl"} centerContent>
         <Spinner size={"xl"} thickness="5px" color="blue.500" />
@@ -73,8 +72,8 @@ export const Home: FC = () => {
   };
 
   return (
-    <Box w="100%" h="100vh" overflow={'hidden'}>
-      <Navbar data={data?.user} />
+    <Box w="100%" h="100vh" overflow={"hidden"}>
+      <Navbar data={user} />
       <Flex h="100vh" w="100%">
         <Box
           display={[
@@ -152,14 +151,16 @@ export const Home: FC = () => {
           </Box>
         </Box>
         {selected ? (
-          <ChatBox
-            setSelected={setSelected}
-            selected={selected}
-            user={user?.user}
-            users={users?.chats}
-          />
+          !!user?._id && (
+            <SingleChatBox
+              setSelected={setSelected}
+              selected={selected}
+              user={user}
+              users={users?.chats}
+            />
+          )
         ) : (
-          <Center w="100%" minH={"100vh"}>
+          <Center w={"100%"} display={["none", "none", "flex"]} minH={"100vh"}>
             <Text fontWeight={"black"}>Please Select atleast 1 chat</Text>
           </Center>
         )}

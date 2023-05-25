@@ -104,7 +104,7 @@ const MyChat: React.FC<MyChatProps> = ({ selected, setSelected, data, user }) =>
           <SenderCard
             key={index}
             data={chat}
-            id={user?.user}
+            id={user}
             onClick={() => handleClick(chat._id)}
             bg={selected === chat?._id ? "secondary.900" : "primary.400"}
             sx={{
