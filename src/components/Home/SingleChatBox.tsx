@@ -9,10 +9,9 @@ import Header from "./Chat/Header";
 import { io } from "socket.io-client";
 import getAllMessages from "../../api/Message/getAllMessages";
 import ChatSkeleton from "./Chat/ChatSkeleton";
-import { time } from "console";
 
 const ENDPOINT = "http://localhost:4000";
-let socket: any, selectedChatCompare;
+let socket: any;
 
 interface SingleChatBoxProps {
   selected: string;
@@ -27,7 +26,7 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
   setSelected,
 }) => {
   const { data, isLoading, refetch } = useQuery(["messages", selected], () =>
-    getAllMessages(selected)
+    getAllMessages(selected, socket)
   );
 
   const [socketConnected, setSocketConnected] = useState(false);
@@ -53,6 +52,7 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
     },
   });
   const chat = users?.find((user: any) => user._id === selected);
+  const isGroupChat = chat?.isGroupChat;
   const [value, setValue] = React.useState("");
   const sender = getSender(user, chat?.users);
   const handleSubmit = () => {
@@ -74,7 +74,6 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
-    socket.emit("join chat", selected);
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
@@ -83,10 +82,6 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved: any) => {
       if (!selected || selected !== newMessageRecieved.chat._id) {
-        // if (!notification.includes(newMessageRecieved)) {
-        //   setNotification([newMessageRecieved, ...notification]);
-        //   setFetchAgain(!fetchAgain);
-        // }
       } else {
         refetch();
       }
@@ -114,26 +109,29 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
 
   if (isLoading) return <ChatSkeleton setSelected={setSelected} />;
   return (
-    <Box flexGrow={1} minH={"100vh"} pt={"70px"}>
+    <Box flexGrow={1} h={"100vh"} pt={"70px"} position={"relative"}>
       <Box
         w={"full"}
-        position={"relative"}
         bg="gray.100"
         overflow={"auto"}
-        h={"full"}
+        h={"100vh"}
       >
         <Header
-          avatar={sender?.profile_pic}
-          name={sender?.name}
-          detail={sender?.email}
+          avatar={isGroupChat ? chat?.GroupPicture : sender?.profile_pic}
+          name={isGroupChat ? chat.chatName : sender?.name}
+          detail={
+            isGroupChat
+              ? chat.users.map((user: any) => user.name).join(", ")
+              : sender?.email
+          }
           setSelected={setSelected}
-          isGroupChat={false}
+          isGroupChat={chat?.groupAdmin?._id === user?._id}
         />
         <Chat
           data={data}
           selected={selected}
           sender={sender}
-          typing={!typing&&istyping}
+          typing={istyping}
         />
         <InputBox
           value={value}

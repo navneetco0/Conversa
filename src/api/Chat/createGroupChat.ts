@@ -4,9 +4,9 @@ import { api } from "../../constant/helper";
 const createGroupChat = async (form: any) => {
   try {;
     const token = localStorage.getItem("chit-chat");
-    const { GroupPic, prev_pic } = form;
+    const { GroupPic } = form;
     let res;
-    if (GroupPic) {
+    if (!!GroupPic) {
       res = await axios.post(
         "https://api.cloudinary.com/v1_1/dwwg7zh78/image/upload",
         GroupPic

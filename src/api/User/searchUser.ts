@@ -10,7 +10,6 @@ const searchUser = async (search: string): Promise<any> => {
                 Authorization: `Bearer ${token}`,
             }
         });
-        console.log(data);
         return data;
     } catch (error : any) {
         return error?.response?.data

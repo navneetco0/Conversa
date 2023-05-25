@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({
     <Flex
       zIndex={2}
       left={0}
-      top={0}
+      top={"70px"}
       p={2}
       bg={"secondary.100"}
       w="100%"

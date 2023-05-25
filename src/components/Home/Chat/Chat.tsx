@@ -15,9 +15,8 @@ const Chat: React.FC<ChatProps> = ({ sender, selected, data, typing }) => {
     <Flex
       w="inherit"
       overflow={"hidden"}
-      h="100%"
-      paddingBottom={"60px"}
-      paddingTop={"50px"}
+      paddingBottom={"135px"}
+      paddingTop={"60px"}
     >
       <Flex
         gap={2}
@@ -25,7 +24,6 @@ const Chat: React.FC<ChatProps> = ({ sender, selected, data, typing }) => {
         justifyContent={"flex-end"}
         w={"100%"}
         p={2}
-        height={"inherit"}
         overflow={"scroll"}
       >
         {data?.messages?.map((message: any, index: number) => (

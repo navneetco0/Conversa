@@ -135,7 +135,7 @@ const CreateGroupChat = () => {
     const Form = {
       chatName: form?.chatName,
       users: form?.users?.map((user: any) => user?._id),
-      GroupPic: formData,
+      GroupPic: form?.profile_pic?formData:null,
     };
     createGroup.mutate(Form);
     setForm({});
