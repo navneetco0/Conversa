@@ -2,7 +2,6 @@ import {
   Avatar,
   Box,
   Button,
-  Center,
   Flex,
   Input,
   InputGroup,
@@ -14,8 +13,10 @@ import { Left, Right } from "Assets/svgs/Directions";
 import { getSender } from "components/Helper/Chat";
 import React from "react";
 import UpdateGroupChat from "./Chat/UpdateGroupChat";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import sendMessage from "api/Message/sendMessage";
+import getAllMessages from "api/Message/getAllMessages";
+import Chat from "./Chat/Chat";
 
 interface ChatBoxProps {
   selected: string;
@@ -29,18 +30,21 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   user,
   setSelected,
 }) => {
+  const { data } = useQuery(["messages", selected], () =>
+    getAllMessages(selected)
+  );
   const toast = useToast();
   const mutation = useMutation({
     mutationFn: sendMessage,
     onSuccess: (data) => {
       if (data?.message) {
         toast({
-            title: data?.message,
-            status: "info",
-            duration: 9000,
-            isClosable: true,
-            position: "top",
-        })
+          title: data?.message,
+          status: "info",
+          duration: 9000,
+          isClosable: true,
+          position: "top",
+        });
       }
     },
   });
@@ -65,7 +69,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   return (
     <Box flexGrow={1} minH={"100vh"} pt={"70px"}>
       <Box
-        p={2}
         w={"full"}
         position={"relative"}
         bg="gray.100"
@@ -101,6 +104,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
             />
           )}
         </Flex>
+        {data?.messages && <Chat messages={data?.messages} />}
         <Box
           left={0}
           position={"absolute"}

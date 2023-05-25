@@ -1,10 +1,7 @@
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { tokenAuth } from "api/Authentication/tokenAuth";
-import getChat from "api/Chat/getChat";
 import { setChatId } from "app/chatSlice";
 import { getSender } from "components/Helper/Chat";
-import React, { useEffect } from "react";
+import React from "react";
 
 interface SenderCardProps {
   data: any;
@@ -107,7 +104,7 @@ const MyChat: React.FC<MyChatProps> = ({ selected, setSelected, data, user }) =>
           <SenderCard
             key={index}
             data={chat}
-            id={user?.user?._id}
+            id={user?.user}
             onClick={() => handleClick(chat._id)}
             bg={selected === chat?._id ? "secondary.900" : "primary.400"}
             sx={{

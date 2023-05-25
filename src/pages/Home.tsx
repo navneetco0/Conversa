@@ -73,9 +73,9 @@ export const Home: FC = () => {
   };
 
   return (
-    <Box w="100%">
+    <Box w="100%" h="100vh" overflow={'hidden'}>
       <Navbar data={data?.user} />
-      <Flex minH="100vh" w="100%">
+      <Flex h="100vh" w="100%">
         <Box
           display={[
             selected ? "none" : "block",
