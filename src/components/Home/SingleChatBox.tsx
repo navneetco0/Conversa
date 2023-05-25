@@ -1,4 +1,4 @@
-import { Box, Center, Spinner, useToast } from "@chakra-ui/react";
+import { Box, Center, Spinner, Text, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Chat from "./Chat/Chat";
@@ -9,6 +9,7 @@ import Header from "./Chat/Header";
 import { io } from "socket.io-client";
 import getAllMessages from "../../api/Message/getAllMessages";
 import ChatSkeleton from "./Chat/ChatSkeleton";
+import { time } from "console";
 
 const ENDPOINT = "http://localhost:4000";
 let socket: any, selectedChatCompare;
@@ -55,6 +56,7 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
   const [value, setValue] = React.useState("");
   const sender = getSender(user, chat?.users);
   const handleSubmit = () => {
+    socket.emit("stop typing", selected);
     if (value === "") return;
     const form = {
       content: value,
@@ -65,6 +67,7 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
   };
   const handleKey = (e: any) => {
     if (e.key === "Enter") {
+      socket.emit("stop typing", selected);
       handleSubmit();
     }
   };
@@ -90,6 +93,25 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
     });
   });
 
+  const handleChange = (e: any) => {
+    setValue(e.target.value);
+    if (!socketConnected) return;
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", selected);
+    }
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", selected);
+        setTyping(false);
+      }
+    }, timerLength);
+  };
+
   if (isLoading) return <ChatSkeleton setSelected={setSelected} />;
   return (
     <Box flexGrow={1} minH={"100vh"} pt={"70px"}>
@@ -107,11 +129,16 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
           setSelected={setSelected}
           isGroupChat={false}
         />
-        <Chat data={data} selected={selected} sender={sender} />
+        <Chat
+          data={data}
+          selected={selected}
+          sender={sender}
+          typing={!typing&&istyping}
+        />
         <InputBox
           value={value}
           onKeyDown={handleKey}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={handleChange}
           handleSubmit={handleSubmit}
         />
       </Box>

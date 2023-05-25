@@ -7,9 +7,10 @@ interface ChatProps {
   sender: any;
   selected: string;
   data: any;
+  typing: boolean;
 }
 
-const Chat: React.FC<ChatProps> = ({ sender, selected, data }) => {
+const Chat: React.FC<ChatProps> = ({ sender, selected, data, typing }) => {
   return (
     <Flex
       w="inherit"
@@ -51,6 +52,11 @@ const Chat: React.FC<ChatProps> = ({ sender, selected, data }) => {
             <Text color="white">{message?.content}</Text>
           </Flex>
         ))}
+        {typing && (
+          <Flex>
+            <Text>typing...</Text>
+          </Flex>
+        )}
       </Flex>
     </Flex>
   );
