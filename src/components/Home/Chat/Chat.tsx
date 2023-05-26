@@ -1,55 +1,67 @@
-import { Flex, Spinner, Text } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import getAllMessages from "../../../api/Message/getAllMessages";
-import { useQuery } from "@tanstack/react-query";
+import { Avatar, Flex, Text } from "@chakra-ui/react";
+import React, { useEffect } from "react";
 
 interface ChatProps {
   sender: any;
   selected: string;
   data: any;
   typing: boolean;
+  user: any;
 }
 
-const Chat: React.FC<ChatProps> = ({ sender, selected, data, typing }) => {
+const Chat: React.FC<ChatProps> = ({ sender, selected, data, typing, user }) => {
+  console.log(data)
+  useEffect(() => {
+    const bottom = document.getElementById("bottom");
+    bottom?.scrollIntoView({ behavior: "smooth" });
+  }, [data]);
   return (
     <Flex
       w="inherit"
-      overflow={"hidden"}
-      paddingBottom={"135px"}
-      paddingTop={"60px"}
+      minH="100%"
+      overflow={"scroll"}
+      paddingBottom={"60px"}
+      paddingTop={"140px"}
     >
       <Flex
         gap={2}
         flexDir={"column"}
         justifyContent={"flex-end"}
+        minH={"100%"}
+        alignItems={"flex-end"}
         w={"100%"}
         p={2}
-        overflow={"scroll"}
       >
         {data?.messages?.map((message: any, index: number) => (
           <Flex
-            rounded="20px"
-            borderBottomLeftRadius={
-              message?.sender?._id === sender?._id ? "0px" : "20px"
-            }
-            borderBottomEndRadius={
-              message?.sender?._id === sender?._id ? "20px" : "0px"
-            }
+            gap="10px"
             key={index}
-            p={2}
-            bg={
-              message?.sender?._id === sender?._id
-                ? "secondary.400"
-                : "primary.800"
-            }
-            maxW={"80%"}
             alignSelf={
-              message?.sender?._id === sender?._id ? "flex-start" : "flex-end"
+              message?.sender?._id === user?._id ? "flex-end" : "flex-start"
             }
+            maxW="80%"
           >
-            <Text color="white">{message?.content}</Text>
+            {message?.sender?._id !== user?._id&&<Avatar src={message?.sender?.profile_pic} />}
+            <Flex
+              rounded="20px"
+              borderBottomLeftRadius={
+                message?.sender?._id === user?._id ? "20px" : "0px"
+              }
+              borderBottomEndRadius={
+                message?.sender?._id === user?._id ? "0px" : "20px"
+              }
+              padding={2}
+              bg={
+                message?.sender?._id === user?._id
+                  ? "primary.800"
+                  : "secondary.400"
+              }
+            >
+              <Text color="white">{message?.content + " "}</Text>
+            </Flex>
           </Flex>
         ))}
+        <Text id={"bottom"}></Text>
         {typing && (
           <Flex>
             <Text>typing...</Text>

@@ -1,5 +1,5 @@
 import { Box, Center, Spinner, Text, useToast } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Chat from "./Chat/Chat";
 import sendMessage from "../../api/Message/sendMessage";
@@ -13,13 +13,13 @@ import ChatSkeleton from "./Chat/ChatSkeleton";
 const ENDPOINT = "http://localhost:4000";
 let socket: any;
 
-interface SingleChatBoxProps {
+interface ChatBoxProps {
   selected: string;
   users: any;
   user: any;
   setSelected: (id: string | null) => void;
 }
-const SingleChatBox: React.FC<SingleChatBoxProps> = ({
+const ChatBox: React.FC<ChatBoxProps> = ({
   selected,
   users,
   user,
@@ -30,6 +30,7 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
   );
 
   const [socketConnected, setSocketConnected] = useState(false);
+  const [rows, setRows] = useState(1);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const queryClient = useQueryClient();
@@ -54,7 +55,7 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
   const chat = users?.find((user: any) => user._id === selected);
   const isGroupChat = chat?.isGroupChat;
   const [value, setValue] = React.useState("");
-  const sender = getSender(user, chat?.users);
+  const sender = isGroupChat?null: getSender(user, chat?.users);
   const handleSubmit = () => {
     socket.emit("stop typing", selected);
     if (value === "") return;
@@ -64,13 +65,17 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
     };
     mutation.mutate(form);
     setValue("");
+    setRows(1);
   };
   const handleKey = (e: any) => {
-    if (e.key === "Enter") {
-      socket.emit("stop typing", selected);
-      handleSubmit();
+    adjustTextareaRows(e.currentTarget);
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        socket.emit("stop typing", selected);
+        handleSubmit();
     }
   };
+
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
@@ -89,6 +94,7 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
   });
 
   const handleChange = (e: any) => {
+    adjustTextareaRows(e.currentTarget);
     setValue(e.target.value);
     if (!socketConnected) return;
     if (!typing) {
@@ -106,16 +112,16 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
       }
     }, timerLength);
   };
+  const adjustTextareaRows = (textarea: HTMLTextAreaElement) => {
+    const { scrollHeight, clientHeight } = textarea;
+    const newRows = Math.ceil(scrollHeight / clientHeight);
+    setRows(newRows);
+  };
 
   if (isLoading) return <ChatSkeleton setSelected={setSelected} />;
   return (
-    <Box flexGrow={1} h={"100vh"} pt={"70px"} position={"relative"}>
-      <Box
-        w={"full"}
-        bg="gray.100"
-        overflow={"auto"}
-        h={"100vh"}
-      >
+    <Box flexGrow={1} h={"100vh"} position={"relative"} bg={"red.500"}>
+      <Box w={"full"} bg="gray.100" overflow={"auto"} h={"100vh"}>
         <Header
           avatar={isGroupChat ? chat?.GroupPicture : sender?.profile_pic}
           name={isGroupChat ? chat.chatName : sender?.name}
@@ -131,10 +137,12 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
           data={data}
           selected={selected}
           sender={sender}
+          user={user}
           typing={istyping}
         />
         <InputBox
           value={value}
+          rows={rows}
           onKeyDown={handleKey}
           onChange={handleChange}
           handleSubmit={handleSubmit}
@@ -144,4 +152,4 @@ const SingleChatBox: React.FC<SingleChatBoxProps> = ({
   );
 };
 
-export default SingleChatBox;
+export default ChatBox;

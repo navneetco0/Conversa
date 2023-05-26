@@ -22,8 +22,8 @@ import CreateGroupChat from "../components/Home/Chat/CreateGroupChat";
 import { Search } from "../Assets/svgs/Directions";
 import ListSkeleton from "../components/Home/ListSkeleton";
 import SearchResult from "../components/Home/SearchResult";
-import SingleChatBox from "../components/Home/SingleChatBox";
 import MyChat from "../components/Home/MyChat";
+import ChatBox from "../components/Home/ChatBox";
 
 export const Home: FC = () => {
   const { data: user } = useQuery(["user"], tokenAuth);
@@ -32,7 +32,6 @@ export const Home: FC = () => {
   const [selected, setSelected] = React.useState<any>(null);
   const [searchResult, setSearchResult] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [loadingChat, setLoadingChat] = React.useState<boolean>(false);
   const toast = useToast();
   const muation = useMutation({
     mutationFn: searchUser,
@@ -81,7 +80,7 @@ export const Home: FC = () => {
             selected ? "none" : "block",
             "block",
           ]}
-          w={["100%", "100%", "300px"]}
+          minW={["100%", "100%", "300px"]}
           minH={"100vh"}
           pt={"80px"}
           borderRightWidth={1}
@@ -152,7 +151,7 @@ export const Home: FC = () => {
         </Box>
         {selected ? (
           !!user?._id && (
-            <SingleChatBox
+            <ChatBox
               setSelected={setSelected}
               selected={selected}
               user={user}

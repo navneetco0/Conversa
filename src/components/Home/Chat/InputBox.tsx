@@ -4,6 +4,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Textarea,
 } from "@chakra-ui/react";
 import React from "react";
 import { Right } from "../../../Assets/svgs/Directions";
@@ -13,9 +14,11 @@ interface InputBoxProps {
   value: string;
   onChange: (e: any) => void;
   onKeyDown: (e: any) => void;
+  rows: number;
 }
 
 const InputBox: React.FC<InputBoxProps> = ({ handleSubmit, ...others }) => {
+
   return (
     <Box
       left={0}
@@ -26,7 +29,7 @@ const InputBox: React.FC<InputBoxProps> = ({ handleSubmit, ...others }) => {
       p={2}
     >
       <InputGroup>
-        <Input
+        <Textarea
           placeholder="Please type your chat here..."
           bg="white"
           variant={"outline"}

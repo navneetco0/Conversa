@@ -6,3 +6,7 @@
   align-items: center;
   /* overflow: hidden; */
 }
+
+::-webkit-scrollbar{
+  display: none;
+}
