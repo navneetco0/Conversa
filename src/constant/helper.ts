@@ -1,2 +1,3 @@
-export const api : string  = 'http://localhost:4000';
-// export const api: string = "https://conversachat.netlify.app";
+export const isProduction = true;
+const apis = ['http://localhost:4000', 'https://conversa.onrender.com'];
+export const api = apis[Number(isProduction)];
