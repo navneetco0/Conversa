@@ -9,8 +9,9 @@ import Header from "./Chat/Header";
 import { io } from "socket.io-client";
 import getAllMessages from "../../api/Message/getAllMessages";
 import ChatSkeleton from "./Chat/ChatSkeleton";
+import { api } from "../../constant/helper";
 
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = api;
 let socket: any;
 
 interface ChatBoxProps {
