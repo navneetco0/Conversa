@@ -56,7 +56,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   const chat = users?.find((user: any) => user._id === selected);
   const isGroupChat = chat?.isGroupChat;
   const [value, setValue] = React.useState("");
-  const sender = isGroupChat?null: getSender(user, chat?.users);
+  const sender = isGroupChat? null: getSender(user, chat?.users);
   const handleSubmit = () => {
     socket.emit("stop typing", selected);
     if (value === "") return;

@@ -10,7 +10,7 @@ const accessChat = async (userId: string): Promise<any> => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return data;
+    return data?.chat;
   } catch (error: any) {
     return error.response.data;
   }

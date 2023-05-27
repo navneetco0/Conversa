@@ -28,7 +28,7 @@ import ChatBox from "../components/Home/ChatBox";
 export const Home: FC = () => {
   const { data: user } = useQuery(["user"], tokenAuth);
   const [search, setSearch] = React.useState<string>("");
-  const { data: users } = useQuery(["users"], getChat);
+  const { data: users, refetch } = useQuery(["users"], getChat);
   const [selected, setSelected] = React.useState<any>(null);
   const [searchResult, setSearchResult] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -138,7 +138,13 @@ export const Home: FC = () => {
             </Box>
             {loading ? <ListSkeleton /> : null}
             {!!searchResult.length ? (
-              <SearchResult data={searchResult} />
+              <SearchResult
+                setSearchResult={setSearchResult}
+                setSearch={setSearch}
+                setSelect={setSelected}
+                data={searchResult}
+                refetch={refetch}
+              />
             ) : (
               <MyChat
                 data={users}
@@ -150,7 +156,7 @@ export const Home: FC = () => {
           </Box>
         </Box>
         {selected ? (
-          !!user?._id && (
+          !!user?._id && !!selected && (
             <ChatBox
               setSelected={setSelected}
               selected={selected}
