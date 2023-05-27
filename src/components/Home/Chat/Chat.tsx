@@ -2,15 +2,11 @@ import { Avatar, Flex, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 
 interface ChatProps {
-  sender: any;
-  selected: string;
   data: any;
-  typing: boolean;
   user: any;
 }
 
-const Chat: React.FC<ChatProps> = ({ sender, selected, data, typing, user }) => {
-  console.log(data)
+const Chat: React.FC<ChatProps> = ({ data, user }) => {
   useEffect(() => {
     const bottom = document.getElementById("bottom");
     bottom?.scrollIntoView({ behavior: "smooth" });
@@ -62,11 +58,6 @@ const Chat: React.FC<ChatProps> = ({ sender, selected, data, typing, user }) => 
           </Flex>
         ))}
         <Text id={"bottom"}></Text>
-        {typing && (
-          <Flex>
-            <Text>typing...</Text>
-          </Flex>
-        )}
       </Flex>
     </Flex>
   );

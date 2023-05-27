@@ -8,6 +8,9 @@ interface HeaderProps {
   detail?: string;
   setSelected: (id: string | null) => void;
   isGroupChat?: boolean;
+  typing?: boolean;
+  user?: any;
+  chat?: any;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -16,6 +19,9 @@ const Header: React.FC<HeaderProps> = ({
   detail,
   setSelected,
   isGroupChat,
+  chat,
+  typing,
+  user,
 }) => {
   const handleBack = () => {
     setSelected(null);
@@ -42,23 +48,28 @@ const Header: React.FC<HeaderProps> = ({
         <Avatar src={avatar} />
         <Box>
           <b>{name}</b>
-          <Text
-            w={"80%"}
-            whiteSpace={"nowrap"}
-            overflow={"hidden"}
-            textOverflow={"ellipsis"}
-          >
-            {detail}
-          </Text>
+          {typing ? (
+            <Flex alignSelf={"flex-start"}>
+              <Text>typing...</Text>
+            </Flex>
+          ) : (
+            <Text
+              w={"80%"}
+              whiteSpace={"nowrap"}
+              overflow={"hidden"}
+              textOverflow={"ellipsis"}
+            >
+              {detail}
+            </Text>
+          )}
         </Box>
       </Flex>
-      {isGroupChat && (
-        //   && chat.groupAdmin?._id === user?._id
+      {isGroupChat && chat.groupAdmin?._id === user?._id && (
         <UpdateGroupChat
           profile_pic={avatar}
           chatName={name}
-          // users={users}
-          // id={chat?._id}
+          users={chat?.users}
+          id={chat?._id}
         />
       )}
     </Flex>

@@ -1,5 +1,5 @@
-import { Box, Center, Spinner, Text, useToast } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import { Box, useToast } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Chat from "./Chat/Chat";
 import sendMessage from "../../api/Message/sendMessage";
@@ -124,6 +124,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
     <Box flexGrow={1} h={"100vh"} position={"relative"} bg={"red.500"}>
       <Box w={"full"} bg="gray.100" overflow={"auto"} h={"100vh"}>
         <Header
+          typing={istyping}
           avatar={isGroupChat ? chat?.GroupPicture : sender?.profile_pic}
           name={isGroupChat ? chat.chatName : sender?.name}
           detail={
@@ -131,15 +132,14 @@ const ChatBox: React.FC<ChatBoxProps> = ({
               ? chat.users.map((user: any) => user.name).join(", ")
               : sender?.email
           }
+          user={user}
+          chat={chat}
           setSelected={setSelected}
           isGroupChat={chat?.groupAdmin?._id === user?._id}
         />
         <Chat
           data={data}
-          selected={selected}
-          sender={sender}
           user={user}
-          typing={istyping}
         />
         <InputBox
           value={value}
